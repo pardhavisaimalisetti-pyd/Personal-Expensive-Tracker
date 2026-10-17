@@ -25,6 +25,38 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Load Data (From Python Flask API, fallback to localStorage)
     await loadData();
 
+    // AI Real-time Category Suggestion as User Types
+    const descInput = document.getElementById('desc');
+    let aiTimeout = null;
+    if (descInput) {
+        descInput.addEventListener('input', function() {
+            clearTimeout(aiTimeout);
+            const query = descInput.value.trim();
+            if (query.length >= 3) {
+                aiTimeout = setTimeout(async () => {
+                    try {
+                        const res = await fetch('/api/ml/predict-category', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ desc: query })
+                        });
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (data.confidence >= 0.45) {
+                                const catSelect = document.getElementById('category');
+                                if (catSelect) {
+                                    catSelect.value = data.category;
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('NLP Auto-predict error:', e);
+                    }
+                }, 300);
+            }
+        });
+    }
+
     // Form Submit Handler
     document.getElementById('expenseForm').addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -222,7 +254,21 @@ function updateDashboard() {
     updateCharts();
 }
 
-function calculatePrediction() {
+async function calculatePrediction() {
+    const predictedEl = document.getElementById('predicted-expenses');
+    try {
+        const res = await fetch('/api/ml/forecast');
+        if (res.ok) {
+            const data = await res.json();
+            if (predictedEl && data && typeof data.predicted_total === 'number') {
+                predictedEl.innerText = `₹${data.predicted_total.toFixed(2)}`;
+                return;
+            }
+        }
+    } catch (err) {
+        console.warn('ML Forecast endpoint fallback to local math:', err);
+    }
+
     const now = new Date();
     let currentMonthExpense = 0;
     
@@ -258,7 +304,6 @@ function calculatePrediction() {
         predicted = (totalExp / daysDiff) * 30;
     }
 
-    const predictedEl = document.getElementById('predicted-expenses');
     if(predictedEl) {
         predictedEl.innerText = `₹${predicted.toFixed(2)}`;
     }

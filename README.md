@@ -1,12 +1,12 @@
-# 💰 PyFin - Personal Expense Tracker
+# 💰 PyFin - AI-Powered Personal Expense Tracker
 
-A modern, full-stack personal finance and expense tracking web application with a sleek glassmorphism UI, real-time analytics, and persistent SQLite storage.
+A full-stack, AI/ML-driven personal finance and expense management platform built with **Python (Flask)**, **Scikit-Learn Machine Learning**, and **React.js**. Features an intelligent glassmorphism UI, real-time Natural Language Processing (NLP) for auto-categorization, unsupervised anomaly detection for overspending, and time-series spending forecasting.
 
-![Python](https://img.shields.io/badge/Python-3.x-blue.svg?style=for-the-badge&logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-2.x-black.svg?style=for-the-badge&logo=flask&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.x-3776AB.svg?style=for-the-badge&logo=python&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/scikit--learn-ML%20Pipelines-F7931E.svg?style=for-the-badge&logo=scikitlearn&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB.svg?style=for-the-badge&logo=react&logoColor=black)
+![Flask](https://img.shields.io/badge/Flask-2.x-000000.svg?style=for-the-badge&logo=flask&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-3-003B57.svg?style=for-the-badge&logo=sqlite&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black)
-![CSS3](https://img.shields.io/badge/CSS3-Glassmorphism-1572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 
 ---
 
@@ -18,33 +18,44 @@ A modern, full-stack personal finance and expense tracking web application with 
 
 ---
 
-## ✨ Features
+## 🧠 Machine Learning Architecture
 
-- **🎨 Modern Glassmorphism UI**: High-contrast futuristic dark theme with animated glowing gradients, responsive layout, and smooth micro-interactions.
-- **📊 Interactive Charts & Analytics**: Real-time spending visualizations powered by Chart.js (monthly trends, category breakdowns, income vs. expense).
-- **💸 Transaction Management**:
-  - Add, track, and delete income and expense records.
-  - Categorization (Food, Shopping, Bills, Entertainment, Health, etc.).
-  - Payment method tracking (UPI, Credit/Debit Card, Cash, Net Banking).
-- **🗄️ Persistent Database**: Built with SQLite via Python's standard `sqlite3` library to store records safely and reliably.
-- **⚡ RESTful API**: Clean backend routes providing CRUD functionality for transaction data.
-- **📱 Responsive Layout**: Seamless experience across mobile, tablet, and desktop screens.
+This project incorporates three distinct production-ready machine learning models:
+
+### 1. 📝 NLP Expense Categorizer (Supervised Learning)
+- **Algorithm**: `TfidfVectorizer` (sublinear term frequency, unigrams + bigrams) + Balanced `LogisticRegression`.
+- **Functionality**: Analyzes the natural language description entered by the user (e.g. *"Swiggy dinner biryani"*, *"Uber ride to airport"*) and predicts the spending category with probability confidence scores.
+- **Inference**: Live debounce auto-suggestion in the UI as the user types.
+
+### 2. 🚨 Outlier & Anomaly Detection (Unsupervised Learning)
+- **Algorithm**: `IsolationForest` (100 estimators, 5% contamination factor) combined with per-category Z-Score statistical thresholds.
+- **Functionality**: Flags unusually high or abnormal transaction amounts before submission (e.g. typing ₹15,000 for a lunch entry), preventing accidental typos and warning against impulsive spending.
+
+### 3. 📈 Time-Series Monthly Expense Forecaster (Regression)
+- **Algorithm**: `Ridge Regression` with calendar & lag features (Day of Month, Day of Week, Weekend indicator, 7-day rolling average).
+- **Functionality**: Projects end-of-month financial expenditure and daily burn rate based on actual spending velocity, replacing naive mathematical daily averages.
+
+### 4. 🔄 Dynamic Model Re-training Pipeline
+- Triggered on-demand via `POST /api/ml/retrain` to incrementally adapt model weights as user transaction history grows.
+
+---
+
+## ⚛️ Dual Frontend Architecture
+
+1. **React.js Dashboard (`/react` & `client/`)**:
+   - Built with **React 18** functional components and modern hooks (`useState`, `useEffect`, `useCallback`, `useMemo`).
+   - Real-time reactive AI suggestions and anomaly alerts.
+   - Glassmorphism design system with responsive layouts.
+2. **Classic Web Dashboard (`/` & `index.html`)**:
+   - Lightweight Vanilla JavaScript + HTML5/CSS3 + Chart.js analytics.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- **HTML5 & CSS3** (Custom Glassmorphism design system)
-- **Vanilla JavaScript (ES6+)**
-- **[Chart.js](https://www.chartjs.org/)** for interactive data charts
-- **FontAwesome 6** for iconography
-- **Google Fonts** (Inter & Outfit)
-
-### Backend
-- **[Python](https://www.python.org/)**
-- **[Flask](https://flask.palletsprojects.com/)** microframework
-- **SQLite3** for lightweight relational database storage
+- **Machine Learning**: `scikit-learn`, `pandas`, `numpy`, `joblib`
+- **Backend**: `Python`, `Flask`, `SQLite3`
+- **Frontend**: `React 18`, `Chart.js`, `Vanilla JavaScript (ES6+)`, `HTML5`, `CSS3` (Custom Glassmorphism)
 
 ---
 
@@ -53,19 +64,32 @@ A modern, full-stack personal finance and expense tracking web application with 
 ```plaintext
 Personal-Expensive-Tracker/
 │
-├── assets/
-│   └── images/
-│       ├── dashboard_mockup.png       # Dashboard screenshot preview
-│       └── wallet_illustration.png    # App graphic assets
+├── ml/                                # Machine Learning Subsystem
+│   ├── dataset.py                     # Synthetic financial transaction data generator
+│   ├── nlp_classifier.py              # TF-IDF + Logistic Regression categorizer
+│   ├── anomaly_detector.py            # Isolation Forest outlier detection
+│   ├── forecaster.py                  # Ridge Regression time-series forecaster
+│   ├── service.py                     # Unified ML Service facade
+│   └── models/                        # Serialized .joblib trained model artifacts
 │
-├── app.py                             # Flask application & REST API routes
+├── client/                            # React.js Vite Project
+│   ├── src/
+│   │   ├── App.jsx                    # Main React application component
+│   │   ├── main.jsx                   # React DOM root
+│   │   └── index.css                  # Modern styles
+│   ├── package.json
+│   └── vite.config.js
+│
+├── assets/
+│   └── images/                        # UI Mockups & graphics
+├── app.py                             # Flask API & static file server
+├── react-app.html                     # Standalone React 18 SPA served via Flask
+├── index.html                         # Classic dashboard
 ├── home.html                          # Landing page
-├── index.html                         # Main dashboard & expense manager UI
-├── login.html                         # Login & authentication page
-├── script.js                          # Client-side logic & chart integrations
-├── style.css                          # Modern glassmorphism styling
+├── login.html                         # Authentication UI
+├── script.js                          # Client-side logic & ML API hooks
+├── style.css                          # Glassmorphism styling system
 ├── requirements.txt                   # Python dependencies
-├── .gitignore                         # Git exclusion rules
 └── README.md                          # Project documentation
 ```
 
@@ -74,7 +98,7 @@ Personal-Expensive-Tracker/
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
-Ensure you have Python 3.8+ installed on your computer.
+Ensure you have Python 3.8+ and Node.js (v18+) installed.
 
 ### 2. Clone the Repository
 ```bash
@@ -82,7 +106,7 @@ git clone https://github.com/pardhavisaimalisetti-pyd/Personal-Expensive-Tracker
 cd Personal-Expensive-Tracker
 ```
 
-### 3. Install Dependencies
+### 3. Install Python Dependencies
 ```bash
 pip install -r requirements.txt
 ```
@@ -91,20 +115,32 @@ pip install -r requirements.txt
 ```bash
 python app.py
 ```
+- Open **[http://127.0.0.1:5000](http://127.0.0.1:5000)** for the Landing Page & Classic Dashboard.
+- Open **[http://127.0.0.1:5000/react](http://127.0.0.1:5000/react)** for the **React.js AI Dashboard**.
 
-### 5. Open in Your Browser
-Visit [http://127.0.0.1:5000](http://127.0.0.1:5000) to start managing your expenses!
+*(Optional)* Run the React Vite Dev Server:
+```bash
+cd client
+npm install
+npm run dev
+```
 
 ---
 
-## 🔌 API Endpoints
+## 🔌 REST & ML API Endpoints
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `GET` | `/` | Serves the landing page (`home.html`) |
-| `GET` | `/api/transactions` | Fetches all stored transactions |
-| `POST` | `/api/transactions` | Adds a new transaction entry |
-| `DELETE` | `/api/transactions/<id>` | Deletes a transaction by ID |
+| `GET` | `/` | Serves Landing Page |
+| `GET` | `/react` | Serves React.js AI Dashboard |
+| `GET` | `/api/transactions` | Retrieve all transactions |
+| `POST` | `/api/transactions` | Add a new transaction |
+| `DELETE` | `/api/transactions/<id>` | Delete transaction by ID |
+| `POST` | `/api/ml/predict-category` | **NLP**: Predicts category & confidence score from text |
+| `POST` | `/api/ml/detect-anomaly` | **ML**: Detects abnormal spending using Isolation Forest |
+| `GET` | `/api/ml/forecast` | **ML**: Time-series monthly spending projection |
+| `GET` | `/api/ml/metrics` | Returns model evaluation metrics (Accuracy, F1, MAE) |
+| `POST` | `/api/ml/retrain` | Triggers model re-training pipeline |
 
 ---
 
@@ -116,4 +152,4 @@ Visit [http://127.0.0.1:5000](http://127.0.0.1:5000) to start managing your expe
 
 ## 📄 License
 
-This project is licensed under the MIT License - feel free to use and customize it!
+This project is licensed under the MIT License.

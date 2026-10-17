@@ -24,3 +24,10 @@ Desktop.ini
 *.sqlite3
 instance/
 
+# Node / React
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+

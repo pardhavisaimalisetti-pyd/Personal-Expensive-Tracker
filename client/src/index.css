@@ -1,0 +1,26 @@
+:root {
+  --bg-gradient: linear-gradient(135deg, #090a0f 0%, #111528 50%, #0d111a 100%);
+  --panel-bg: rgba(20, 25, 40, 0.6);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --text-main: #ffffff;
+  --text-muted: #8b9bb4;
+  --neon-blue: #00f2fe;
+  --neon-purple: #f093fb;
+  --neon-pink: #f5576c;
+  --emerald-green: #43e97b;
+  --orange-glow: #fa709a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding: 20px;
+}
