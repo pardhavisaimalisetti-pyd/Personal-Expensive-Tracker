@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyFin - Modern Expense Tracker</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .landing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px;
+            position: relative;
+            z-index: 10;
+        }
+        .landing-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        .landing-nav a:hover {
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        .hero-section-full {
+            min-height: calc(100vh - 100px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+            padding: 0 20px;
+        }
+        .hero-content {
+            max-width: 800px;
+            text-align: center;
+        }
+        .hero-content h1 {
+            font-size: 64px;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+        .hero-content p {
+            font-size: 20px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .hero-buttons .glow-button {
+            font-size: 18px;
+            padding: 15px 40px;
+        }
+        .secondary-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-main);
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 18px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .secondary-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animated Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <header class="landing-header">
+        <div class="logo">
+            <i class="fa-brands fa-python neon-text"></i>
+            <span>Py<span class="neon-text">Fin</span></span>
+        </div>
+        <nav class="landing-nav">
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+            <a href="login.html" style="color: var(--neon-blue);"><i class="fa-solid fa-right-to-bracket"></i> Login / Sign Up</a>
+        </nav>
+    </header>
+
+    <main class="hero-section-full">
+        <div class="hero-content">
+            <h1 class="glowing-heading" style="font-size: 5vw;">Track Your Expenses Smartly with Python</h1>
+            <p>A visually stunning, modern, and intelligent personal expense tracker designed for individuals. Manage your daily, monthly, and yearly finances with ease.</p>
+            <div class="hero-buttons">
+                <a href="login.html" class="btn glow-button"><i class="fa-solid fa-rocket"></i> Get Started</a>
+                <a href="index.html" class="secondary-btn"><i class="fa-solid fa-eye"></i> View Demo Dashboard</a>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
