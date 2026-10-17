@@ -18,3 +18,9 @@ ENV/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# SQLite Database
+*.db
+*.sqlite3
+instance/
+
